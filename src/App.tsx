@@ -9,6 +9,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
@@ -40,8 +41,10 @@ const App = () => (
           <BrowserRouter>
             <AuthProvider>
               <CartProvider>
-                <Navigation />
-                <Routes>
+                <div className="flex flex-col min-h-screen">
+                  <Navigation />
+                  <main className="flex-1">
+                    <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/events" element={<Events />} />
                   <Route path="/events/:id" element={<EventDetails />} />
@@ -138,8 +141,11 @@ const App = () => (
                     }
                   />
 
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
               </CartProvider>
             </AuthProvider>
           </BrowserRouter>

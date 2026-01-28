@@ -1,15 +1,12 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, MapPin, Search, Ticket, X } from "lucide-react";
+import { Search, Ticket, X } from "lucide-react";
 import { apiService } from "@/lib/api";
 import type { Event } from "@/types/api";
-import { motion } from "framer-motion";
-import { format } from "date-fns";
+import { EventCard } from "@/components/EventCard";
 
 const EVENT_CATEGORIES = [
   "Music",
@@ -25,7 +22,6 @@ const EVENT_CATEGORIES = [
 ];
 
 const Events = () => {
-  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,20 +104,6 @@ const Events = () => {
     setSearchQuery("");
   };
 
-  const getStatusColor = (status: Event["status"]) => {
-    switch (status) {
-      case "PUBLISHED":
-        return "bg-primary";
-      case "DRAFT":
-        return "bg-muted";
-      case "CANCELLED":
-        return "bg-destructive";
-      case "COMPLETED":
-        return "bg-accent";
-      default:
-        return "bg-secondary";
-    }
-  };
 
   if (isLoading) {
     return (
@@ -197,66 +179,7 @@ const Events = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event, index) => (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card
-                  className="h-full hover:shadow-lg transition-all cursor-pointer overflow-hidden group"
-                  onClick={() => navigate(`/events/${event.id}`)}
-                >
-                  {event.imageUrl && (
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={event.imageUrl}
-                        alt={event.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <CardTitle className="text-xl line-clamp-2">
-                        {event.name}
-                      </CardTitle>
-                      <Badge className={getStatusColor(event.status)}>
-                        {event.status}
-                      </Badge>
-                    </div>
-                    {event.description && (
-                      <CardDescription className="line-clamp-2">
-                        {event.description}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span>
-                        {format(new Date(event.startDateTime), "PPP")}
-                      </span>
-                    </div>
-                    {event.venue && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4" />
-                        <span className="line-clamp-1">{event.venue}</span>
-                      </div>
-                    )}
-                    <Button
-                      className="w-full bg-gradient-primary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/events/${event.id}`);
-                      }}
-                    >
-                      <Ticket className="mr-2 h-4 w-4" />
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <EventCard key={event.id} event={event} index={index} />
             ))}
           </div>
         )}
