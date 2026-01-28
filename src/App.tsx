@@ -41,8 +41,10 @@ const App = () => (
           <BrowserRouter>
             <AuthProvider>
               <CartProvider>
-                <Navigation />
-                <Routes>
+                <div className="flex flex-col min-h-screen">
+                  <Navigation />
+                  <main className="flex-1">
+                    <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/events" element={<Events />} />
                   <Route path="/events/:id" element={<EventDetails />} />
