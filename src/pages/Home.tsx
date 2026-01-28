@@ -16,23 +16,45 @@ const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [trendingEvents, setTrendingEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
+  const [isLoadingTrending, setIsLoadingTrending] = useState(true);
+  const [isLoadingCurrent, setIsLoadingCurrent] = useState(true);
 
   useEffect(() => {
     const loadTrendingEvents = async () => {
       try {
-        setIsLoading(true);
+        setIsLoadingTrending(true);
         const events = await apiService.getEvents(1, 6);
         setTrendingEvents(events);
       } catch (error) {
         console.error("Failed to load trending events:", error);
         setTrendingEvents([]);
       } finally {
-        setIsLoading(false);
+        setIsLoadingTrending(false);
+      }
+    };
+
+    const loadCurrentEvents = async () => {
+      try {
+        setIsLoadingCurrent(true);
+        // Fetch more events and sort by date (soonest first)
+        const events = await apiService.getEvents(1, 12);
+        const now = new Date();
+        const upcomingEvents = events
+          .filter(event => new Date(event.startDateTime) >= now)
+          .sort((a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime())
+          .slice(0, 6);
+        setCurrentEvents(upcomingEvents);
+      } catch (error) {
+        console.error("Failed to load current events:", error);
+        setCurrentEvents([]);
+      } finally {
+        setIsLoadingCurrent(false);
       }
     };
 
     loadTrendingEvents();
+    loadCurrentEvents();
   }, []);
 
   const features = [
