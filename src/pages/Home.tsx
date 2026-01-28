@@ -92,7 +92,7 @@ const Home = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto"
             >
-              Your gateway to unforgettable experiences. Discover concerts, festivals, sports, and more.
+              Your gateway to unforgettable experiences. Browse concerts, festivals, sports, and more — no signup required.
             </motion.p>
 
             <motion.div
@@ -107,7 +107,7 @@ const Home = () => {
                 onClick={() => navigate("/events")}
               >
                 <Calendar className="mr-2 h-5 w-5" />
-                Explore Events
+                Browse Events
               </Button>
               {!isAuthenticated && (
                 <Button
@@ -116,7 +116,7 @@ const Home = () => {
                   className="text-lg px-10 py-6 bg-background/50 backdrop-blur-sm border-border/50 hover:bg-background/80"
                   onClick={() => navigate("/signup")}
                 >
-                  Get Started Free
+                  Sign Up to Buy Tickets
                 </Button>
               )}
             </motion.div>
