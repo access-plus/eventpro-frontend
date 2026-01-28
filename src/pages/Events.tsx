@@ -105,20 +105,6 @@ const Events = () => {
     setSearchQuery("");
   };
 
-  const getStatusColor = (status: Event["status"]) => {
-    switch (status) {
-      case "PUBLISHED":
-        return "bg-primary";
-      case "DRAFT":
-        return "bg-muted";
-      case "CANCELLED":
-        return "bg-destructive";
-      case "COMPLETED":
-        return "bg-accent";
-      default:
-        return "bg-secondary";
-    }
-  };
 
   if (isLoading) {
     return (
