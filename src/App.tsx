@@ -9,6 +9,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
