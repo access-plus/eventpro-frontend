@@ -93,18 +93,14 @@ export const EventCard = ({ event, index = 0 }: EventCardProps) => {
           {/* Quick Info Overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
             <div className="flex items-center gap-4 text-sm text-card-foreground">
-              {event.ticketTypes && event.ticketTypes.length > 0 && (
+              <div className="flex items-center gap-1.5 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
+                <Ticket className="h-3.5 w-3.5 text-primary" />
+                <span className="font-medium">View Tickets</span>
+              </div>
+              {event.venue && (
                 <div className="flex items-center gap-1.5 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
-                  <Ticket className="h-3.5 w-3.5 text-primary" />
-                  <span className="font-medium">
-                    From ${Math.min(...event.ticketTypes.map(t => t.price))}
-                  </span>
-                </div>
-              )}
-              {event.capacity && (
-                <div className="flex items-center gap-1.5 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
-                  <Users className="h-3.5 w-3.5 text-primary" />
-                  <span>{event.capacity} spots</span>
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  <span className="line-clamp-1 max-w-[120px]">{event.venue}</span>
                 </div>
               )}
             </div>
