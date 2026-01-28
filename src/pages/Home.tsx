@@ -1,15 +1,39 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { RecentlyViewedEvents } from "@/components/RecentlyViewedEvents";
-import { Ticket, Calendar, Shield, Zap, Play, ChevronDown } from "lucide-react";
+import { EventCard } from "@/components/EventCard";
+import { Ticket, Calendar, Shield, Zap, Play, ChevronDown, TrendingUp, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { apiService } from "@/lib/api";
+import type { Event } from "@/types/api";
 import heroImage from "@/assets/hero-concert.jpg";
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [trendingEvents, setTrendingEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTrendingEvents = async () => {
+      try {
+        setIsLoading(true);
+        const events = await apiService.getEvents(1, 6);
+        setTrendingEvents(events);
+      } catch (error) {
+        console.error("Failed to load trending events:", error);
+        setTrendingEvents([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTrendingEvents();
+  }, []);
 
   const features = [
     {
@@ -35,7 +59,7 @@ const Home = () => {
   ];
 
   const scrollToContent = () => {
-    document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("trending")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -158,6 +182,74 @@ const Home = () => {
             <ChevronDown className="h-6 w-6" />
           </motion.div>
         </motion.button>
+      </section>
+
+      {/* Trending Events Section */}
+      <section id="trending" className="py-20 bg-secondary/20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12"
+          >
+            <div>
+              <div className="inline-flex items-center gap-2 text-primary mb-3">
+                <TrendingUp className="h-5 w-5" />
+                <span className="text-sm font-semibold uppercase tracking-wider">Trending Now</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold">Hot Events This Week</h2>
+              <p className="text-xl text-muted-foreground mt-2">
+                Don't miss out on the most popular experiences
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="lg"
+              className="self-start md:self-auto"
+              onClick={() => navigate("/events")}
+            >
+              View All Events
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </motion.div>
+
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <Card key={i} className="overflow-hidden">
+                  <Skeleton className="h-52 w-full" />
+                  <div className="p-5 space-y-4">
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-full" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-8 w-full" />
+                      <Skeleton className="h-8 w-full" />
+                    </div>
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : trendingEvents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {trendingEvents.map((event, index) => (
+                <EventCard key={event.id} event={event} index={index} />
+              ))}
+            </div>
+          ) : (
+            <Card className="p-12 text-center">
+              <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-xl font-semibold mb-2">No events available</h3>
+              <p className="text-muted-foreground mb-6">
+                Check back soon for exciting new events
+              </p>
+              <Button onClick={() => navigate("/events")}>
+                Browse All Events
+              </Button>
+            </Card>
+          )}
+        </div>
       </section>
 
       {/* Recently Viewed Events */}
