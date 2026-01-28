@@ -22,7 +22,6 @@ const EVENT_CATEGORIES = [
 ];
 
 const Events = () => {
-  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
