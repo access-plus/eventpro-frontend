@@ -35,7 +35,7 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      await login(data);
+      await login({ email: data.email, password: data.password });
       navigate("/");
     } catch (error) {
       // Error is handled in AuthContext
