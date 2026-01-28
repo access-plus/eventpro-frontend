@@ -141,8 +141,11 @@ const App = () => (
                     }
                   />
 
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
               </CartProvider>
             </AuthProvider>
           </BrowserRouter>

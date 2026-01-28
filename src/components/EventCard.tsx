@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Ticket, Clock, Users } from "lucide-react";
+import { Calendar, MapPin, Ticket, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import type { Event } from "@/types/api";
