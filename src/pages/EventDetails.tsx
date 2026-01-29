@@ -82,6 +82,26 @@ const EventDetails = () => {
     }
   };
 
+  const handleSeatSelect = (seats: Seat[]) => {
+    setSelectedSeats(seats);
+  };
+
+  const handleAddSeatsToCart = () => {
+    if (selectedSeats.length > 0 && event) {
+      selectedSeats.forEach((seat) => {
+        addItem({
+          ticketTypeId: seat.id,
+          ticketTypeName: `${seat.section} - Row ${seat.row}, Seat ${seat.number} (${seat.type})`,
+          eventName: event.name,
+          eventId: event.id,
+          quantity: 1,
+          price: seat.price,
+        });
+      });
+      setSelectedSeats([]);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
