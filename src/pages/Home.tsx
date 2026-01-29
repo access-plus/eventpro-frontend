@@ -65,7 +65,7 @@ const Home = () => {
 
     loadTrendingEvents();
     loadCurrentEvents();
-  }, []);
+  }, [selectedCategory]);
 
   const features = [
     {
