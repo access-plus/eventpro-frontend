@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Ticket, Minus, Plus } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calendar, MapPin, Clock, Ticket, Minus, Plus, Grid3X3 } from "lucide-react";
 import { apiService } from "@/lib/api";
 import type { Event, TicketType } from "@/types/api";
 import { useCart } from "@/contexts/CartContext";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { SeatingMap, generateSampleSeats, Seat } from "@/components/SeatingMap";
 
 const EventDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,8 +20,13 @@ const EventDetails = () => {
   const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+  const [ticketMode, setTicketMode] = useState<"general" | "seating">("general");
   const { addItem } = useCart();
   const { addRecentlyViewed } = usePreferences();
+
+  // Generate sample seats for demo
+  const sampleSeats = useMemo(() => generateSampleSeats(), []);
 
   useEffect(() => {
     if (id) {
@@ -72,6 +79,26 @@ const EventDetails = () => {
         price: ticketType.price,
       });
       setQuantities((prev) => ({ ...prev, [ticketType.id]: 0 }));
+    }
+  };
+
+  const handleSeatSelect = (seats: Seat[]) => {
+    setSelectedSeats(seats);
+  };
+
+  const handleAddSeatsToCart = () => {
+    if (selectedSeats.length > 0 && event) {
+      selectedSeats.forEach((seat) => {
+        addItem({
+          ticketTypeId: seat.id,
+          ticketTypeName: `${seat.section} - Row ${seat.row}, Seat ${seat.number} (${seat.type})`,
+          eventName: event.name,
+          eventId: event.id,
+          quantity: 1,
+          price: seat.price,
+        });
+      });
+      setSelectedSeats([]);
     }
   };
 
@@ -148,71 +175,112 @@ const EventDetails = () => {
 
           {/* Ticket Selection */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Tickets</h2>
-            
-            {ticketTypes.length === 0 ? (
-              <Card className="p-6 text-center">
-                <Ticket className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-muted-foreground">No tickets available</p>
-              </Card>
-            ) : (
-              ticketTypes.map((ticketType) => (
-                <Card key={ticketType.id} className="overflow-hidden">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{ticketType.name}</CardTitle>
-                      <Badge variant={ticketType.status === "SOLD_OUT" ? "destructive" : "secondary"}>
-                        {ticketType.status === "SOLD_OUT" ? "Sold Out" : `${ticketType.availableQuantity} left`}
-                      </Badge>
-                    </div>
-                    {ticketType.description && (
-                      <CardDescription>{ticketType.description}</CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="text-2xl font-bold">
-                      ${ticketType.price.toFixed(2)}
-                    </div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Tickets</h2>
+            </div>
 
-                    {ticketType.status !== "SOLD_OUT" && (
-                      <>
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() => updateQuantity(ticketType.id, -1)}
-                              disabled={(quantities[ticketType.id] || 0) <= 0}
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                            <span className="w-8 text-center font-medium">
-                              {quantities[ticketType.id] || 0}
-                            </span>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() => updateQuantity(ticketType.id, 1)}
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                          </div>
+            {/* Tabs for General Admission vs Seating */}
+            <Tabs value={ticketMode} onValueChange={(v) => setTicketMode(v as "general" | "seating")}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="general" className="flex items-center gap-2">
+                  <Ticket className="h-4 w-4" />
+                  General Admission
+                </TabsTrigger>
+                <TabsTrigger value="seating" className="flex items-center gap-2">
+                  <Grid3X3 className="h-4 w-4" />
+                  Select Seats
+                </TabsTrigger>
+              </TabsList>
+
+              {/* General Admission Tab */}
+              <TabsContent value="general" className="space-y-4 mt-4">
+                {ticketTypes.length === 0 ? (
+                  <Card className="p-6 text-center">
+                    <Ticket className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                    <p className="text-muted-foreground">No tickets available</p>
+                  </Card>
+                ) : (
+                  ticketTypes.map((ticketType) => (
+                    <Card key={ticketType.id} className="overflow-hidden">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-lg">{ticketType.name}</CardTitle>
+                          <Badge variant={ticketType.status === "SOLD_OUT" ? "destructive" : "secondary"}>
+                            {ticketType.status === "SOLD_OUT" ? "Sold Out" : `${ticketType.availableQuantity} left`}
+                          </Badge>
+                        </div>
+                        {ticketType.description && (
+                          <CardDescription>{ticketType.description}</CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="text-2xl font-bold">
+                          ${ticketType.price.toFixed(2)}
                         </div>
 
-                        <Button
-                          className="w-full bg-gradient-primary"
-                          disabled={(quantities[ticketType.id] || 0) <= 0}
-                          onClick={() => handleAddToCart(ticketType)}
-                        >
-                          <Ticket className="mr-2 h-4 w-4" />
-                          Add to Cart
-                        </Button>
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              ))
-            )}
+                        {ticketType.status !== "SOLD_OUT" && (
+                          <>
+                            <div className="flex items-center justify-between gap-4">
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() => updateQuantity(ticketType.id, -1)}
+                                  disabled={(quantities[ticketType.id] || 0) <= 0}
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                                <span className="w-8 text-center font-medium">
+                                  {quantities[ticketType.id] || 0}
+                                </span>
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() => updateQuantity(ticketType.id, 1)}
+                                >
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+
+                            <Button
+                              className="w-full bg-gradient-primary"
+                              disabled={(quantities[ticketType.id] || 0) <= 0}
+                              onClick={() => handleAddToCart(ticketType)}
+                            >
+                              <Ticket className="mr-2 h-4 w-4" />
+                              Add to Cart
+                            </Button>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </TabsContent>
+
+              {/* Seating Map Tab */}
+              <TabsContent value="seating" className="mt-4">
+                <SeatingMap
+                  seats={sampleSeats}
+                  onSeatSelect={handleSeatSelect}
+                  maxSeats={8}
+                  venueName={event?.venue || "Main Venue"}
+                />
+                
+                {selectedSeats.length > 0 && (
+                  <Button
+                    className="w-full mt-4 bg-gradient-primary"
+                    size="lg"
+                    onClick={handleAddSeatsToCart}
+                  >
+                    <Ticket className="mr-2 h-4 w-4" />
+                    Add {selectedSeats.length} Seat{selectedSeats.length > 1 ? "s" : ""} to Cart - $
+                    {selectedSeats.reduce((sum, s) => sum + s.price, 0).toFixed(2)}
+                  </Button>
+                )}
+              </TabsContent>
+            </Tabs>
           </div>
         </motion.div>
       </div>
