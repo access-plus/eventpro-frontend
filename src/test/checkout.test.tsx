@@ -63,8 +63,16 @@ describe("GuestCheckoutForm", () => {
       </BrowserRouter>
     );
 
+    // Fill required fields first
+    fireEvent.change(screen.getByLabelText(/First Name/i), { target: { value: "John" } });
+    fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: "Doe" } });
     const emailInput = screen.getByLabelText(/Email/i);
     fireEvent.change(emailInput, { target: { value: "invalid-email" } });
+    
+    // Accept terms
+    const checkbox = screen.getByRole("checkbox");
+    fireEvent.click(checkbox);
+    
     fireEvent.click(screen.getByRole("button", { name: /Continue as Guest/i }));
 
     await waitFor(() => {
