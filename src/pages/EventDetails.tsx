@@ -20,8 +20,13 @@ const EventDetails = () => {
   const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+  const [ticketMode, setTicketMode] = useState<"general" | "seating">("general");
   const { addItem } = useCart();
   const { addRecentlyViewed } = usePreferences();
+
+  // Generate sample seats for demo
+  const sampleSeats = useMemo(() => generateSampleSeats(), []);
 
   useEffect(() => {
     if (id) {
