@@ -31,6 +31,7 @@ import Organizer from "./pages/Organizer";
 import EventForm from "./pages/EventForm";
 import OrderHistory from "./pages/OrderHistory";
 import Pricing from "./pages/Pricing";
+import Partners from "./pages/Partners";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
