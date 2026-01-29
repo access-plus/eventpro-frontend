@@ -52,9 +52,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/checkout"
           element={
-            <ProtectedRoute>
-              <PageTransition><Checkout /></PageTransition>
-            </ProtectedRoute>
+            <PageTransition><Checkout /></PageTransition>
           }
         />
 
