@@ -143,25 +143,27 @@ const AnimatedRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <PreferencesProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AuthProvider>
-              <CartProvider>
-                <div className="flex flex-col min-h-screen">
-                  <Navigation />
-                  <main className="flex-1">
-                    <AnimatedRoutes />
-                  </main>
-                  <Footer />
-                </div>
-              </CartProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </PreferencesProvider>
+      <LanguageProvider>
+        <PreferencesProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AuthProvider>
+                <CartProvider>
+                  <div className="flex flex-col min-h-screen">
+                    <Navigation />
+                    <main className="flex-1">
+                      <AnimatedRoutes />
+                    </main>
+                    <Footer />
+                  </div>
+                </CartProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </PreferencesProvider>
+      </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
