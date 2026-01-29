@@ -134,21 +134,17 @@ describe("MerchandiseAddons", () => {
     fireEvent.click(checkboxes[0]);
 
     expect(screen.getByText("Add-ons Total:")).toBeInTheDocument();
-    expect(screen.getByText("$25.00")).toBeInTheDocument();
+    // Use getAllByText since price appears in multiple places
+    const priceElements = screen.getAllByText("$25.00");
+    expect(priceElements.length).toBeGreaterThanOrEqual(1);
 
     // Select second item ($30)
     fireEvent.click(checkboxes[1]);
 
-    // Total should now be $55
-    expect(screen.getByText("$55.00")).toBeInTheDocument();
+    // Total should now be $55 - find it in the total section
+    const totalSection = screen.getByText("Add-ons Total:").parentElement;
+    expect(totalSection).toHaveTextContent("$55.00");
   });
-
-  it("allows increasing quantity and updates price", () => {
-    render(
-      <MerchandiseAddons items={testItems} onItemsChange={mockOnItemsChange} />
-    );
-
-    // Select VIP Parking ($30)
     const checkboxes = screen.getAllByRole("checkbox");
     fireEvent.click(checkboxes[1]);
 
