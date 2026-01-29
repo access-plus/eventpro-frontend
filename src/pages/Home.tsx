@@ -150,7 +150,7 @@ const Home = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto"
             >
-              Your gateway to unforgettable experiences. Browse concerts, festivals, sports, and more — no signup required.
+              {t("home.hero.subtitle")}
             </motion.p>
 
             <motion.div
