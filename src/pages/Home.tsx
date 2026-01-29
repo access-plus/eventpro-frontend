@@ -9,6 +9,7 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { Ticket, Calendar, Shield, Zap, Play, ChevronDown, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { apiService } from "@/lib/api";
 import type { Event } from "@/types/api";
 import heroImage from "@/assets/hero-concert.jpg";
