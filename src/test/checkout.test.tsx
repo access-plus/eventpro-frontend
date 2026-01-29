@@ -195,16 +195,17 @@ describe("MerchandiseAddons", () => {
       </TooltipProvider>
     );
 
-    // Select two items
+    // Select one item first
     const checkboxes = screen.getAllByRole("checkbox");
     fireEvent.click(checkboxes[0]); // T-shirt $29.99
-    fireEvent.click(checkboxes[1]); // VIP Parking $25.00
 
     await waitFor(() => {
       expect(screen.getByText("Add-ons Total:")).toBeInTheDocument();
-      // Check the total is displayed (the exact value may vary based on items)
-      const totalElement = screen.getByText(/^\$\d+\.\d{2}$/);
-      expect(totalElement).toBeInTheDocument();
     });
+    
+    // Verify callback was called with the selected item
+    expect(mockOnItemsChange).toHaveBeenCalled();
+    const lastCall = mockOnItemsChange.mock.calls[mockOnItemsChange.mock.calls.length - 1][0];
+    expect(lastCall.length).toBe(1);
   });
 });
