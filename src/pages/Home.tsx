@@ -9,6 +9,7 @@ import { CategoryFilter } from "@/components/CategoryFilter";
 import { Ticket, Calendar, Shield, Zap, Play, ChevronDown, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { apiService } from "@/lib/api";
 import type { Event } from "@/types/api";
 import heroImage from "@/assets/hero-concert.jpg";
@@ -16,6 +17,7 @@ import heroImage from "@/assets/hero-concert.jpg";
 const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [trendingEvents, setTrendingEvents] = useState<Event[]>([]);
   const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
   const [isLoadingTrending, setIsLoadingTrending] = useState(true);
@@ -126,7 +128,7 @@ const Home = () => {
               className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-4 py-2 mb-8"
             >
               <Play className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Live Events Near You</span>
+              <span className="text-sm font-medium text-foreground">{t("home.hero.subtitle").split('.')[0]}</span>
             </motion.div>
 
             <motion.h1
@@ -136,10 +138,10 @@ const Home = () => {
               className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
             >
               <span className="bg-gradient-primary bg-clip-text text-transparent">
-                Experience
+                {t("home.hero.title").split(' ').slice(0, 1).join(' ')}
               </span>
               <br />
-              <span className="text-foreground">Events Like Never Before</span>
+              <span className="text-foreground">{t("home.hero.title").split(' ').slice(1).join(' ')}</span>
             </motion.h1>
 
             <motion.p
@@ -148,7 +150,7 @@ const Home = () => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto"
             >
-              Your gateway to unforgettable experiences. Browse concerts, festivals, sports, and more — no signup required.
+              {t("home.hero.subtitle")}
             </motion.p>
 
             <motion.div
@@ -163,7 +165,7 @@ const Home = () => {
                 onClick={() => navigate("/events")}
               >
                 <Calendar className="mr-2 h-5 w-5" />
-                Browse Events
+                {t("home.browse_events")}
               </Button>
               {!isAuthenticated && (
                 <Button
@@ -228,7 +230,7 @@ const Home = () => {
             <div>
               <div className="inline-flex items-center gap-2 text-primary mb-3">
                 <TrendingUp className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wider">Trending Now</span>
+                <span className="text-sm font-semibold uppercase tracking-wider">{t("home.trending")}</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold">Hot Events This Week</h2>
               <p className="text-xl text-muted-foreground mt-2">
@@ -238,10 +240,10 @@ const Home = () => {
             <Button
               variant="outline"
               size="lg"
-              className="self-start md:self-auto"
+              className="self-start md:self-auto rtl:ml-0 rtl:mr-auto"
               onClick={() => navigate("/events")}
             >
-              View All Events
+              {t("common.view_all")}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </motion.div>
@@ -310,9 +312,9 @@ const Home = () => {
             <div>
               <div className="inline-flex items-center gap-2 text-primary mb-3">
                 <Clock className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wider">Happening Soon</span>
+                <span className="text-sm font-semibold uppercase tracking-wider">{t("home.upcoming")}</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold">Upcoming Events</h2>
+              <h2 className="text-4xl md:text-5xl font-bold">{t("home.upcoming")}</h2>
               <p className="text-xl text-muted-foreground mt-2">
                 Don't miss these events happening in the coming days
               </p>
