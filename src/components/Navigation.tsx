@@ -62,6 +62,7 @@ export const Navigation = () => {
               );
             })}
 
+            <LanguageSwitcher />
             <ThemeToggle />
 
             {isAuthenticated && <CartMenu />}
