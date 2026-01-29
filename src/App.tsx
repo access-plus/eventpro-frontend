@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { PreferencesProvider } from "@/contexts/PreferencesContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -51,9 +52,7 @@ const AnimatedRoutes = () => {
         <Route
           path="/checkout"
           element={
-            <ProtectedRoute>
-              <PageTransition><Checkout /></PageTransition>
-            </ProtectedRoute>
+            <PageTransition><Checkout /></PageTransition>
           }
         />
 
@@ -144,25 +143,27 @@ const AnimatedRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <PreferencesProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AuthProvider>
-              <CartProvider>
-                <div className="flex flex-col min-h-screen">
-                  <Navigation />
-                  <main className="flex-1">
-                    <AnimatedRoutes />
-                  </main>
-                  <Footer />
-                </div>
-              </CartProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </PreferencesProvider>
+      <LanguageProvider>
+        <PreferencesProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AuthProvider>
+                <CartProvider>
+                  <div className="flex flex-col min-h-screen">
+                    <Navigation />
+                    <main className="flex-1">
+                      <AnimatedRoutes />
+                    </main>
+                    <Footer />
+                  </div>
+                </CartProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </PreferencesProvider>
+      </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserMenu } from "@/components/UserMenu";
 import { CartMenu } from "@/components/CartMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +62,7 @@ export const Navigation = () => {
               );
             })}
 
+            <LanguageSwitcher />
             <ThemeToggle />
 
             {isAuthenticated && <CartMenu />}
@@ -117,9 +119,15 @@ export const Navigation = () => {
                 );
               })}
 
-              <div className="flex items-center gap-2 px-4 py-2">
-                <span className="text-sm text-muted-foreground">Theme</span>
-                <ThemeToggle />
+              <div className="flex items-center justify-between px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Theme</span>
+                  <ThemeToggle />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Language</span>
+                  <LanguageSwitcher />
+                </div>
               </div>
 
               {isAuthenticated ? (
