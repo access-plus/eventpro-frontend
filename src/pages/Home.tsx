@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RecentlyViewedEvents } from "@/components/RecentlyViewedEvents";
 import { EventCard } from "@/components/EventCard";
+import { CategoryFilter } from "@/components/CategoryFilter";
 import { Ticket, Calendar, Shield, Zap, Play, ChevronDown, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
