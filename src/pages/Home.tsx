@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RecentlyViewedEvents } from "@/components/RecentlyViewedEvents";
 import { EventCard } from "@/components/EventCard";
+import { CategoryFilter } from "@/components/CategoryFilter";
 import { Ticket, Calendar, Shield, Zap, Play, ChevronDown, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,12 +20,21 @@ const Home = () => {
   const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
   const [isLoadingTrending, setIsLoadingTrending] = useState(true);
   const [isLoadingCurrent, setIsLoadingCurrent] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTrendingEvents = async () => {
       try {
         setIsLoadingTrending(true);
-        const events = await apiService.getEvents(1, 6);
+        let events: Event[];
+        
+        if (selectedCategory) {
+          events = await apiService.getEventsByCategory(selectedCategory);
+          events = events.slice(0, 6);
+        } else {
+          events = await apiService.getEvents(1, 6);
+        }
+        
         setTrendingEvents(events);
       } catch (error) {
         console.error("Failed to load trending events:", error);
@@ -55,7 +65,7 @@ const Home = () => {
 
     loadTrendingEvents();
     loadCurrentEvents();
-  }, []);
+  }, [selectedCategory]);
 
   const features = [
     {
@@ -234,6 +244,20 @@ const Home = () => {
               View All Events
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
+          </motion.div>
+
+          {/* Category Filters */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-8"
+          >
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
           </motion.div>
 
           {isLoadingTrending ? (
