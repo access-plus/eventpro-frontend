@@ -230,7 +230,7 @@ const Home = () => {
             <div>
               <div className="inline-flex items-center gap-2 text-primary mb-3">
                 <TrendingUp className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wider">Trending Now</span>
+                <span className="text-sm font-semibold uppercase tracking-wider">{t("home.trending")}</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold">Hot Events This Week</h2>
               <p className="text-xl text-muted-foreground mt-2">
