@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Ticket, Minus, Plus } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calendar, MapPin, Clock, Ticket, Minus, Plus, Grid3X3 } from "lucide-react";
 import { apiService } from "@/lib/api";
 import type { Event, TicketType } from "@/types/api";
 import { useCart } from "@/contexts/CartContext";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { SeatingMap, generateSampleSeats, Seat } from "@/components/SeatingMap";
 
 const EventDetails = () => {
   const { id } = useParams<{ id: string }>();
