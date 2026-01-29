@@ -17,6 +17,7 @@ import heroImage from "@/assets/hero-concert.jpg";
 const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [trendingEvents, setTrendingEvents] = useState<Event[]>([]);
   const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
   const [isLoadingTrending, setIsLoadingTrending] = useState(true);
