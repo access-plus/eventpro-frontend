@@ -20,6 +20,7 @@ const Home = () => {
   const [currentEvents, setCurrentEvents] = useState<Event[]>([]);
   const [isLoadingTrending, setIsLoadingTrending] = useState(true);
   const [isLoadingCurrent, setIsLoadingCurrent] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTrendingEvents = async () => {
