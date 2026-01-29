@@ -312,9 +312,9 @@ const Home = () => {
             <div>
               <div className="inline-flex items-center gap-2 text-primary mb-3">
                 <Clock className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wider">Happening Soon</span>
+                <span className="text-sm font-semibold uppercase tracking-wider">{t("home.upcoming")}</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold">Upcoming Events</h2>
+              <h2 className="text-4xl md:text-5xl font-bold">{t("home.upcoming")}</h2>
               <p className="text-xl text-muted-foreground mt-2">
                 Don't miss these events happening in the coming days
               </p>
