@@ -30,6 +30,7 @@ import UserManagement from "./pages/UserManagement";
 import Organizer from "./pages/Organizer";
 import EventForm from "./pages/EventForm";
 import OrderHistory from "./pages/OrderHistory";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
         <Route path="/events" element={<PageTransition><Events /></PageTransition>} />
         <Route path="/events/:id" element={<PageTransition><EventDetails /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><SignUp /></PageTransition>} />
