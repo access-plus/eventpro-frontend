@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserMenu } from "@/components/UserMenu";
 import { CartMenu } from "@/components/CartMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
