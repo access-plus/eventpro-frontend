@@ -138,10 +138,10 @@ const Home = () => {
               className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
             >
               <span className="bg-gradient-primary bg-clip-text text-transparent">
-                Experience
+                {t("home.hero.title").split(' ').slice(0, 1).join(' ')}
               </span>
               <br />
-              <span className="text-foreground">Events Like Never Before</span>
+              <span className="text-foreground">{t("home.hero.title").split(' ').slice(1).join(' ')}</span>
             </motion.h1>
 
             <motion.p
