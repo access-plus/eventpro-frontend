@@ -165,7 +165,7 @@ const Home = () => {
                 onClick={() => navigate("/events")}
               >
                 <Calendar className="mr-2 h-5 w-5" />
-                Browse Events
+                {t("home.browse_events")}
               </Button>
               {!isAuthenticated && (
                 <Button
