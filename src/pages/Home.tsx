@@ -240,7 +240,7 @@ const Home = () => {
             <Button
               variant="outline"
               size="lg"
-              className="self-start md:self-auto"
+              className="self-start md:self-auto rtl:ml-0 rtl:mr-auto"
               onClick={() => navigate("/events")}
             >
               View All Events
