@@ -128,7 +128,7 @@ const Home = () => {
               className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-4 py-2 mb-8"
             >
               <Play className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Live Events Near You</span>
+              <span className="text-sm font-medium text-foreground">{t("home.hero.subtitle").split('.')[0]}</span>
             </motion.div>
 
             <motion.h1
