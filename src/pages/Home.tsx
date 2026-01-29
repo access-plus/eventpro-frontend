@@ -26,7 +26,15 @@ const Home = () => {
     const loadTrendingEvents = async () => {
       try {
         setIsLoadingTrending(true);
-        const events = await apiService.getEvents(1, 6);
+        let events: Event[];
+        
+        if (selectedCategory) {
+          events = await apiService.getEventsByCategory(selectedCategory);
+          events = events.slice(0, 6);
+        } else {
+          events = await apiService.getEvents(1, 6);
+        }
+        
         setTrendingEvents(events);
       } catch (error) {
         console.error("Failed to load trending events:", error);
