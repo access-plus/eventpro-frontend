@@ -243,7 +243,7 @@ const Home = () => {
               className="self-start md:self-auto rtl:ml-0 rtl:mr-auto"
               onClick={() => navigate("/events")}
             >
-              View All Events
+              {t("common.view_all")}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </motion.div>
