@@ -420,14 +420,148 @@ const EventForm = () => {
                       </FormItem>
                     )}
                   />
+                </Card>
 
+                {/* Ticket Types */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle>Ticket Types</CardTitle>
+                        <CardDescription>Define different ticket options for attendees</CardDescription>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          append({
+                            name: "",
+                            description: "",
+                            price: 0,
+                            totalQuantity: 100,
+                          })
+                        }
+                      >
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Ticket Type
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {fields.map((field, index) => (
+                      <Card key={field.id} className="border-2">
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                          <CardTitle className="text-lg">
+                            Ticket Type {index + 1}
+                          </CardTitle>
+                          {fields.length > 1 && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => remove(index)}
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          )}
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name={`ticketTypes.${index}.name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Ticket Name</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="VIP Access" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name={`ticketTypes.${index}.price`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Price ($)</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      step="0.01"
+                                      placeholder="49.99"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name={`ticketTypes.${index}.description`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="What's included with this ticket?"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={`ticketTypes.${index}.totalQuantity`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Available Quantity</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    placeholder="100"
+                                    {...field}
+                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* Submit Button */}
+                <div className="flex justify-end gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => navigate("/organizer")}
+                  >
+                    Cancel
+                  </Button>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-primary"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Creating..." : "Create Event"}
                   </Button>
+                </div>
                 </form>
               </Form>
             </CardContent>
