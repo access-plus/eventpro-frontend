@@ -4,6 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Calendar, Upload, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -204,12 +211,25 @@ const EventForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Category</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g., Music, Sports, Conference" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter category name or UUID
-                        </FormDescription>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Music">Music</SelectItem>
+                            <SelectItem value="Afrobeat Concerts">Afrobeat Concerts</SelectItem>
+                            <SelectItem value="Sports">Sports</SelectItem>
+                            <SelectItem value="Conference">Conference</SelectItem>
+                            <SelectItem value="Diaspora Film Screenings">Diaspora Film Screenings</SelectItem>
+                            <SelectItem value="National Day Celebrations">National Day Celebrations</SelectItem>
+                            <SelectItem value="Cultural Festival">Cultural Festival</SelectItem>
+                            <SelectItem value="Comedy">Comedy</SelectItem>
+                            <SelectItem value="Theater">Theater</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
