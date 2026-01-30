@@ -130,10 +130,17 @@ const EventForm = () => {
     try {
       const formData = new FormData();
       
-      // Format datetime for Java LocalDateTime (without timezone suffix)
-      const formatLocalDateTime = (dateStr: string) => {
+      // Format datetime as array for Java LocalDateTime (works without JSR310 module)
+      const formatLocalDateTimeArray = (dateStr: string): number[] => {
         const date = new Date(dateStr);
-        return date.toISOString().slice(0, 19); // Remove the "Z" suffix
+        return [
+          date.getFullYear(),
+          date.getMonth() + 1, // JavaScript months are 0-indexed
+          date.getDate(),
+          date.getHours(),
+          date.getMinutes(),
+          date.getSeconds(),
+        ];
       };
       
       // Create the request JSON matching backend CreateEventRequest
