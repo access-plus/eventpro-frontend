@@ -38,6 +38,13 @@ const addressSchema = z.object({
   country: z.string().min(1, "Country is required"),
 });
 
+const ticketTypeSchema = z.object({
+  name: z.string().min(1, "Ticket name is required"),
+  description: z.string().optional(),
+  price: z.number().min(0, "Price must be 0 or greater"),
+  totalQuantity: z.number().min(1, "Quantity must be at least 1"),
+});
+
 const eventFormSchema = z.object({
   name: z.string().min(1, "Event name is required").max(100, "Name must be less than 100 characters"),
   description: z.string().max(2000, "Description must be less than 2000 characters").optional(),
@@ -46,6 +53,7 @@ const eventFormSchema = z.object({
   category: z.string().min(1, "Category is required"),
   marketingEnabled: z.boolean().default(false),
   address: addressSchema,
+  ticketTypes: z.array(ticketTypeSchema).min(1, "At least one ticket type is required"),
 }).refine((data) => {
   const start = new Date(data.startTime);
   const end = new Date(data.endTime);
