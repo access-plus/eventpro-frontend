@@ -87,7 +87,20 @@ const EventForm = () => {
         zipCode: "",
         country: "",
       },
+      ticketTypes: [
+        {
+          name: "",
+          description: "",
+          price: 0,
+          totalQuantity: 100,
+        },
+      ],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "ticketTypes",
   });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
