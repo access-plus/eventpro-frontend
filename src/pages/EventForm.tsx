@@ -130,12 +130,18 @@ const EventForm = () => {
     try {
       const formData = new FormData();
       
+      // Format datetime for Java LocalDateTime (without timezone suffix)
+      const formatLocalDateTime = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toISOString().slice(0, 19); // Remove the "Z" suffix
+      };
+      
       // Create the request JSON matching backend CreateEventRequest
       const requestPayload = {
         name: values.name,
         description: values.description,
-        startTime: new Date(values.startTime).toISOString(),
-        endTime: new Date(values.endTime).toISOString(),
+        startTime: formatLocalDateTime(values.startTime),
+        endTime: formatLocalDateTime(values.endTime),
         category: values.category,
         marketingEnabled: values.marketingEnabled,
         address: values.address,
