@@ -33,7 +33,7 @@ const addressSchema = z.object({
 
 const eventFormSchema = z.object({
   name: z.string().min(1, "Event name is required").max(100, "Name must be less than 100 characters"),
-  description: z.string().min(1, "Description is required").max(2000, "Description must be less than 2000 characters"),
+  description: z.string().max(2000, "Description must be less than 2000 characters").optional(),
   startTime: z.string().min(1, "Start time is required"),
   endTime: z.string().min(1, "End time is required"),
   category: z.string().min(1, "Category is required"),
