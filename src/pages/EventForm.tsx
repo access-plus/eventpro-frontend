@@ -24,10 +24,10 @@ import {
 } from "@/components/ui/form";
 
 const addressSchema = z.object({
-  street: z.string().min(1, "Street is required"),
+  street: z.string().optional(),
   city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  zipCode: z.string().min(1, "Zip code is required"),
+  state: z.string().optional(),
+  zipCode: z.string().optional(),
   country: z.string().min(1, "Country is required"),
 });
 
