@@ -147,8 +147,8 @@ const EventForm = () => {
       const requestPayload = {
         name: values.name,
         description: values.description,
-        startTime: formatLocalDateTime(values.startTime),
-        endTime: formatLocalDateTime(values.endTime),
+        startTime: formatLocalDateTimeArray(values.startTime),
+        endTime: formatLocalDateTimeArray(values.endTime),
         category: values.category,
         marketingEnabled: values.marketingEnabled,
         address: values.address,
