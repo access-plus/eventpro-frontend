@@ -130,25 +130,19 @@ const EventForm = () => {
     try {
       const formData = new FormData();
       
-      // Format datetime as array for Java LocalDateTime (works without JSR310 module)
-      const formatLocalDateTimeArray = (dateStr: string): number[] => {
+      // Format datetime as ISO string for Java LocalDateTime (requires jackson-datatype-jsr310)
+      const formatLocalDateTime = (dateStr: string): string => {
         const date = new Date(dateStr);
-        return [
-          date.getFullYear(),
-          date.getMonth() + 1, // JavaScript months are 0-indexed
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds(),
-        ];
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
       };
       
       // Create the request JSON matching backend CreateEventRequest
       const requestPayload = {
         name: values.name,
         description: values.description,
-        startTime: formatLocalDateTimeArray(values.startTime),
-        endTime: formatLocalDateTimeArray(values.endTime),
+        startTime: formatLocalDateTime(values.startTime),
+        endTime: formatLocalDateTime(values.endTime),
         category: values.category,
         marketingEnabled: values.marketingEnabled,
         address: values.address,
