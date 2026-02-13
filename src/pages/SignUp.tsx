@@ -10,13 +10,21 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Ticket, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const signUpSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number"),
+  confirmPassword: z.string(),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string(),
+  phoneNumber: z.string().optional(),
+  role: z.enum(["USER", "ORGANIZER"]).default("USER"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -33,10 +41,17 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      role: "USER",
+    },
   });
+
+  const selectedRole = watch("role");
 
   const onSubmit = async (data: SignUpFormData) => {
     setIsLoading(true);
@@ -46,6 +61,8 @@ const SignUp = () => {
         password: data.password,
         firstName: data.firstName,
         lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+        role: data.role,
       });
       navigate("/login");
     } catch (error) {
@@ -109,6 +126,35 @@ const SignUp = () => {
                 />
                 {errors.email && (
                   <p className="text-sm text-destructive">{errors.email.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber">Phone number (optional)</Label>
+                <Input
+                  id="phoneNumber"
+                  type="tel"
+                  placeholder="+1 (555) 000-0000"
+                  {...register("phoneNumber")}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="role">I want to</Label>
+                <Select
+                  value={selectedRole}
+                  onValueChange={(value: "USER" | "ORGANIZER") => setValue("role", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USER">Attend events</SelectItem>
+                    <SelectItem value="ORGANIZER">Organize events</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.role && (
+                  <p className="text-sm text-destructive">{errors.role.message}</p>
                 )}
               </div>
 
